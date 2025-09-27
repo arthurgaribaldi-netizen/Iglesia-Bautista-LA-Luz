@@ -67,3 +67,5 @@ tsconfig.tsbuildinfo
 
 # Prisma
 prisma/migrations/
+
+.vercel
