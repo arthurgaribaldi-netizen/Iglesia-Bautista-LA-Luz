@@ -3,23 +3,23 @@
 **Data:** 27 de Janeiro de 2025  
 **Versão Node.js:** v22.19.0  
 **Versão NPM:** 10.9.3  
-**Última Atualização:** 27 de Janeiro de 2025  
+**Última Atualização:** 27 de Janeiro de 2025 (atualizado às 15:34)  
 
 ## 📋 Resumo Executivo
 
-O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Foram identificadas **18 dependências desatualizadas** (redução de 21 para 18), mas **nenhuma vulnerabilidade de segurança**. A análise revela que o projeto está usando versões estáveis e compatíveis entre si, com algumas oportunidades de atualização para melhorar performance e recursos.
+O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Foram identificadas **17 dependências desatualizadas** (redução de 18 para 17), mas **nenhuma vulnerabilidade de segurança**. A análise revela que o projeto está usando versões estáveis e compatíveis entre si, com algumas oportunidades de atualização para melhorar performance e recursos.
 
 ## 🔍 Análise de Dependências Principais
 
 ### Stack Core
-- **Next.js:** 14.2.32 → 15.5.4 (Major Update)
+- **Next.js:** 14.2.33 → 15.5.4 (Major Update)
 - **React:** 18.3.1 → 19.1.1 (Major Update) 
 - **TypeScript:** 5.9.2 (Atual)
 - **Node.js:** 22.19.0 (Compatível)
 
 ### Banco de Dados
-- **Prisma:** 5.7.1 → 6.16.2 (Major Update)
-- **@prisma/client:** 5.7.1 → 6.16.2 (Major Update)
+- **Prisma:** 5.22.0 → 6.16.2 (Major Update)
+- **@prisma/client:** 5.22.0 → 6.16.2 (Major Update)
 
 ### Autenticação e Segurança
 - **NextAuth:** 4.24.11 (Estável)
@@ -32,9 +32,9 @@ O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Fo
 
 | Dependência | Atual | Latest | Impacto |
 |-------------|-------|--------|---------|
-| **Next.js** | 14.2.32 | 15.5.4 | 🔴 Alto - Mudanças significativas na API |
+| **Next.js** | 14.2.33 | 15.5.4 | 🔴 Alto - Mudanças significativas na API |
 | **React** | 18.3.1 | 19.1.1 | 🔴 Alto - Novas features e possíveis breaking changes |
-| **Prisma** | 5.7.1 | 6.16.2 | 🔴 Alto - Mudanças na CLI e schema |
+| **Prisma** | 5.22.0 | 6.16.2 | 🔴 Alto - Mudanças na CLI e schema |
 | **@types/react** | 18.3.24 | 19.1.14 | 🟡 Médio - Tipos para React 19 |
 | **@types/react-dom** | 18.3.7 | 19.1.9 | 🟡 Médio - Tipos para React 19 |
 
@@ -55,7 +55,7 @@ O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Fo
 
 | Dependência | Atual | Latest | Impacto |
 |-------------|-------|--------|---------|
-| **next** | 14.2.32 | 14.2.33 | 🟢 Baixo - Correções de bugs |
+| **next** | 14.2.33 | 15.5.4 | 🔴 Alto - Major update disponível |
 
 ## 🛡️ Análise de Segurança
 
@@ -68,7 +68,7 @@ O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Fo
 
 ### ✅ Compatibilidades Confirmadas
 
-1. **Next.js 14.2.32 + React 18.3.1** - ✅ Totalmente compatível
+1. **Next.js 14.2.33 + React 18.3.1** - ✅ Totalmente compatível
 2. **TypeScript 5.9.2 + Next.js 14** - ✅ Suporte nativo
 3. **Prisma 5.22.0 + Node.js 22** - ✅ Compatível
 4. **ESLint 8.57.1 + TypeScript 5.9** - ✅ Funciona bem
@@ -76,7 +76,7 @@ O projeto apresenta um stack tecnológico moderno com boa estabilidade geral. Fo
 
 ### ⚠️ Potenciais Conflitos
 
-1. **ESLint Config Next 14.0.4 vs Next.js 14.2.32**
+1. **ESLint Config Next 14.0.4 vs Next.js 14.2.33**
    - **Status:** Compatível, mas versão do eslint-config-next pode estar desatualizada
    - **Recomendação:** Atualizar para versão 15.x quando migrar para Next.js 15
 
@@ -168,7 +168,7 @@ Adicionar ao `package.json`:
 ## 📈 Métricas de Qualidade
 
 - **Dependências totais:** 84
-- **Dependências desatualizadas:** 18 (21.4%)
+- **Dependências desatualizadas:** 17 (20.2%)
 - **Vulnerabilidades:** 0
 - **Breaking changes potenciais:** 5
 - **Score de compatibilidade:** 8.5/10
@@ -182,7 +182,7 @@ Adicionar ao `package.json`:
 4. **Versionamento semântico bem implementado**
 
 ### ⚠️ Áreas de Atenção
-1. **18 dependências desatualizadas** (21.4% do total)
+1. **17 dependências desatualizadas** (20.2% do total)
 2. **5 major updates** com breaking changes potenciais
 3. **Falta de especificação de engines**
 4. **Algumas ferramentas de desenvolvimento desatualizadas**
@@ -195,5 +195,5 @@ Adicionar ao `package.json`:
 
 ---
 
-**Relatório gerado automaticamente em:** 27/01/2025  
+**Relatório gerado automaticamente em:** 27/01/2025 (atualizado às 15:34)  
 **Próxima análise recomendada:** 27/04/2025
