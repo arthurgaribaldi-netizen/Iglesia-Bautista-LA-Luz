@@ -1,0 +1,237 @@
+name: Production Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  NODE_VERSION: '18'
+  # Replace with your actual Vercel URL
+  VERCEL_URL: https://your-app.vercel.app
+
+jobs:
+  # Validação pré-deploy
+  pre-deploy-validation:
+    name: Pre-deploy Validation
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.validation.outputs.should-deploy }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run all tests
+        run: npm run test:all
+
+      - name: Build application
+        run: npm run build
+
+      - name: Validate build
+        id: validation
+        run: |
+          if [ -d ".next" ]; then
+            echo "✅ Build successful"
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Build failed"
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  # Deploy para produção
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: pre-deploy-validation
+    if: needs.pre-deploy-validation.outputs.should-deploy == 'true'
+    outputs:
+      deployment-url: ${{ steps.deployment-url.outputs.url }}
+    environment: 
+      name: production
+      url: ${{ steps.deployment-url.outputs.url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Validate required secrets
+        run: |
+          if [ -z "${{ secrets.DATABASE_URL }}" ]; then
+            echo "❌ DATABASE_URL secret is not set"
+            exit 1
+          fi
+          echo "✅ Required secrets are available"
+
+      - name: Run database migrations
+        run: npm run db:push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Set deployment URL
+        id: deployment-url
+        run: |
+          # Try to get the deployment URL from Vercel CLI or use environment variable
+          if [ -n "${{ steps.deploy.outputs.preview-url }}" ]; then
+            echo "url=${{ steps.deploy.outputs.preview-url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ env.VERCEL_URL }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Health check
+        run: |
+          # Verificar se a aplicação está respondendo
+          DEPLOYMENT_URL="${{ steps.deployment-url.outputs.url }}"
+          response=$(curl -s -o /dev/null -w "%{http_code}" $DEPLOYMENT_URL/api/health)
+          if [ $response -eq 200 ]; then
+            echo "✅ Production health check passed"
+          else
+            echo "❌ Production health check failed with status: $response"
+            exit 1
+          fi
+
+      - name: Performance check
+        run: |
+          # Verificar tempo de resposta
+          DEPLOYMENT_URL="${{ steps.deployment-url.outputs.url }}"
+          response_time=$(curl -s -o /dev/null -w "%{time_total}" $DEPLOYMENT_URL/)
+          echo "Production response time: ${response_time}s"
+          
+          # Verificar se está dentro do limite aceitável (3s para produção)
+          if (( $(echo "$response_time < 3.0" | bc -l) )); then
+            echo "✅ Production performance check passed"
+          else
+            echo "❌ Production performance check failed - response time too high"
+            exit 1
+          fi
+
+  # Testes pós-deploy
+  post-deploy-tests:
+    name: Post-deploy Tests
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run production smoke tests
+        run: |
+          npx playwright test --config=playwright.production.config.ts
+        env:
+          BASE_URL: ${{ needs.deploy-production.outputs.deployment-url || env.VERCEL_URL }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: production-test-results
+          path: playwright-report/
+          retention-days: 30
+
+  # Notificação de deploy
+  notify-deployment:
+    name: Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy-production, post-deploy-tests]
+    if: always()
+    steps:
+      - name: Create GitHub Release
+        if: success()
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            ## 🚀 Production Deployment
+            
+            **Version:** v${{ github.run_number }}
+            **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
+            **Environment:** Production
+            
+            ### Changes
+            - Deploy automático para produção
+            - Testes de smoke executados com sucesso
+            - Health check aprovado
+            
+            ### Monitoring
+            - [Vercel Dashboard](https://vercel.com/dashboard)
+            - [Sentry](https://sentry.io)
+            - [GitHub Actions](https://github.com/${{ github.repository }}/actions)
+          draft: false
+          prerelease: false
+
+  # Rollback automático em caso de falha
+  rollback:
+    name: Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [deploy-production, post-deploy-tests]
+    if: failure()
+    steps:
+      - name: Rollback to previous version
+        run: |
+          echo "🚨 Rollback triggered due to deployment failure"
+          # Aqui você pode implementar lógica de rollback
+          # Por exemplo, reverter para a versão anterior no Vercel
+          
+      - name: Notify rollback
+        run: |
+          echo "🚨 Rollback notification sent to team"

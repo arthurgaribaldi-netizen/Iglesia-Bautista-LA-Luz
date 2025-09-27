@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      Role     @default(MEMBER)
+  createdAt DateTime @default(now())
+
+  sermons Sermon[]
+  events  Event[]
+
+  @@map("users")
+}
+
+model Sermon {
+  id          String   @id @default(cuid())
+  title       String
+  pastor      String
+  date        DateTime
+  audioUrl    String?
+  videoUrl    String?
+  transcript  String?
+  series      String?
+  description String?
+  createdAt   DateTime @default(now())
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  @@map("sermons")
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  capacity    Int?
+  isPublic    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  organizer   User   @relation(fields: [organizerId], references: [id])
+  organizerId String
+
+  @@map("events")
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
+
+model BibleVerse {
+  id        String   @id @default(cuid())
+  reference String
+  text      String
+  book      String
+  chapter   Int
+  verse     Int
+  version   String   @default("RVR1960")
+  createdAt DateTime @default(now())
+
+  @@map("bible_verses")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  MEMBER
+}

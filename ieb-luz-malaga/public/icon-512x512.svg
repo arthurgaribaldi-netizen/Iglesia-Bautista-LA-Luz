@@ -1,0 +1,12 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background rectangles -->
+  <rect x="32" y="32" width="192" height="192" fill="#B8860B" transform="rotate(-12 128 128)" rx="16"/>
+  <rect x="96" y="96" width="192" height="192" fill="#FFD700" transform="rotate(-6 192 192)" rx="16"/>
+  <rect x="160" y="160" width="192" height="192" fill="#FFD700" transform="rotate(3 256 256)" rx="16"/>
+  
+  <!-- Cross -->
+  <g transform="translate(256, 256)">
+    <rect x="-19.2" y="-128" width="38.4" height="256" fill="white" rx="16"/>
+    <rect x="-128" y="-19.2" width="256" height="38.4" fill="white" rx="16"/>
+  </g>
+</svg>

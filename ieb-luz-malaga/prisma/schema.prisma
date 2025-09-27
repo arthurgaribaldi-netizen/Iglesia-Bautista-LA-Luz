@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String?
+  role         Role     @default(MEMBER)
+  createdAt    DateTime @default(now())
+  
+  sermons      Sermon[]
+  events       Event[]
+  
+  @@map("users")
+}
+
+model Sermon {
+  id          String   @id @default(cuid())
+  title       String
+  pastor      String
+  date        DateTime
+  audioUrl    String?
+  videoUrl    String?
+  transcript  String?
+  series      String?
+  description String?
+  createdAt   DateTime @default(now())
+  
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  
+  @@map("sermons")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  capacity    Int?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  organizer   User     @relation(fields: [organizerId], references: [id])
+  organizerId String
+  
+  @@map("events")
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@map("contacts")
+}
+
+model BibleVerse {
+  id        String   @id @default(cuid())
+  reference String
+  text      String
+  book      String
+  chapter   Int
+  verse     Int
+  version   String   @default("RVR1960")
+  createdAt DateTime @default(now())
+  
+  @@unique([reference, version], name: "reference_version")
+  @@map("bible_verses")
+}
+
+model SpiritualResource {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String   // devotional, guide, magazine, pastor_resource, etc.
+  category    String?
+  url         String?
+  downloadUrl String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  @@map("spiritual_resources")
+}
+
+model UsefulLink {
+  id          String   @id @default(cuid())
+  title       String
+  url         String
+  description String?
+  category    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  @@map("useful_links")
+}
+
+model ChurchInfo {
+  id              String   @id @default(cuid())
+  name            String
+  location        String
+  cif             String?
+  ministryNumber  String?
+  email           String?
+  phone           String?
+  address         String?
+  website         String?
+  youtubeChannel  String?
+  facebookPage    String?
+  instagramPage   String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  
+  @@map("church_info")
+}
+
+model Devotional {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  verse       String
+  prayer      String
+  source      String   // la-buena-semilla, guia-ummbe, revista-unidos-uebe, pastor-ricks
+  date        String   // YYYY-MM-DD format
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  @@unique([date, source], name: "date_source")
+  @@map("devotionals")
+}
+
+model Newsletter {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  isActive    Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+  unsubscribedAt DateTime?
+  
+  @@map("newsletter")
+}
+
+model Member {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  phone       String?
+  address     String?
+  birthDate   DateTime?
+  joinDate    DateTime  @default(now())
+  isActive    Boolean  @default(true)
+  notes       String?
+  createdAt   DateTime @default(now())
+  
+  @@map("members")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  MEMBER
+}

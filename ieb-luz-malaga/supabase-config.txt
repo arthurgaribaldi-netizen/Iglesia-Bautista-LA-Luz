@@ -1,0 +1,27 @@
+# CONFIGURAÇÃO DO SUPABASE
+# Copie este conteúdo para o arquivo .env.local
+
+# Supabase Database Configuration
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.ggnhinfhlvmshtrtmues.supabase.co:5432/postgres"
+
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL="https://ggnhinfhlvmshtrtmues.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnbmhpbmZobHZtc2h0cnRtdWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzcyODAsImV4cCI6MjA3NDA1MzI4MH0.0PMrzLlRTuib3FtIM4xWp_Z0jymXU0tHMaHxMOI2B9k"
+SUPABASE_SERVICE_ROLE_KEY="[YOUR-SERVICE-ROLE-KEY]"
+
+# NextAuth Configuration
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key-here"
+
+# Optional: Email Configuration (for contact form)
+SMTP_HOST=""
+SMTP_PORT=""
+SMTP_USER=""
+SMTP_PASS=""
+
+# INSTRUÇÕES:
+# 1. Crie um arquivo .env.local na raiz do projeto
+# 2. Copie o conteúdo acima para o arquivo
+# 3. Substitua [YOUR-PASSWORD] pela senha do banco de dados do Supabase
+# 4. Substitua [YOUR-SERVICE-ROLE-KEY] pela chave de service role do Supabase
+# 5. Gere uma chave secreta para NEXTAUTH_SECRET

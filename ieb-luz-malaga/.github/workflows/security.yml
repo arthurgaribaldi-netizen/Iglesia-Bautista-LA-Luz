@@ -1,0 +1,248 @@
+name: Security & Dependencies
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Executa verificação de segurança diariamente às 3:00 UTC
+    - cron: '0 3 * * *'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Auditoria de dependências
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: Run npm audit fix
+        run: npm audit fix --dry-run
+
+  # Verificação com Snyk
+  snyk-security:
+    name: Snyk Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload Snyk results to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+
+  # Verificação de licenças
+  license-check:
+    name: License Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check licenses
+        run: npx license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;Unlicense'
+
+  # Verificação de dependências desatualizadas
+  outdated-dependencies:
+    name: Outdated Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check outdated dependencies
+        run: npm outdated
+
+      - name: Create Dependabot PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const outdated = execSync('npm outdated --json', { encoding: 'utf8' });
+            const outdatedJson = JSON.parse(outdated);
+            
+            if (Object.keys(outdatedJson).length > 0) {
+              console.log('Outdated dependencies found:', outdatedJson);
+              // Aqui você pode adicionar lógica para criar PRs automaticamente
+            }
+
+  # Verificação de secrets
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  # Verificação de vulnerabilidades no código
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # Verificação de configurações de segurança
+  security-config:
+    name: Security Configuration Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check security headers
+        run: |
+          echo "Checking security configurations..."
+          # Verificar se existem headers de segurança no next.config.mjs
+          if grep -q "X-Frame-Options" next.config.mjs; then
+            echo "✓ X-Frame-Options header found"
+          else
+            echo "✗ X-Frame-Options header missing"
+            exit 1
+          fi
+          
+          if grep -q "X-Content-Type-Options" next.config.mjs; then
+            echo "✓ X-Content-Type-Options header found"
+          else
+            echo "✗ X-Content-Type-Options header missing"
+            exit 1
+          fi
+
+      - name: Check environment variables
+        run: |
+          echo "Checking for sensitive data in environment files..."
+          if [ -f ".env.example" ]; then
+            echo "✓ .env.example file found"
+          else
+            echo "✗ .env.example file missing"
+          fi
+
+  # Verificação de dependências com OWASP
+  owasp-dependency-check:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'ieb-luz-malaga'
+          path: '.'
+          format: 'JSON'
+          out: 'reports'
+
+      - name: Upload OWASP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-dependency-check-report
+          path: reports/
+          retention-days: 30
+
+  # Notificação de vulnerabilidades
+  security-notification:
+    name: Security Notification
+    runs-on: ubuntu-latest
+    needs: [dependency-audit, snyk-security, secret-scan, codeql-analysis]
+    if: always()
+    steps:
+      - name: Notify security team
+        uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        with:
+          status: ${{ job.status }}
+          channel: '#security'
+          fields: repo,message,commit,author,action,eventName,ref,workflow

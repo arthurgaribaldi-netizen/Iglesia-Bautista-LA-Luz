@@ -1,0 +1,101 @@
+// Mock para sharp
+export const sharp = jest.fn(() => ({
+  resize: jest.fn(() => sharp()),
+  jpeg: jest.fn(() => sharp()),
+  png: jest.fn(() => sharp()),
+  webp: jest.fn(() => sharp()),
+  avif: jest.fn(() => sharp()),
+  toBuffer: jest.fn(() => Promise.resolve(Buffer.from('test-image'))),
+  toFile: jest.fn(() => Promise.resolve({ size: 1024 })),
+  metadata: jest.fn(() => Promise.resolve({
+    width: 800,
+    height: 600,
+    format: 'jpeg',
+    size: 1024,
+  })),
+  stats: jest.fn(() => Promise.resolve({
+    isOpaque: true,
+    isSemiTransparent: false,
+    hasAlpha: false,
+    hasAlphaChannel: false,
+  })),
+  clone: jest.fn(() => sharp()),
+  rotate: jest.fn(() => sharp()),
+  flip: jest.fn(() => sharp()),
+  flop: jest.fn(() => sharp()),
+  blur: jest.fn(() => sharp()),
+  sharpen: jest.fn(() => sharp()),
+  gamma: jest.fn(() => sharp()),
+  greyscale: jest.fn(() => sharp()),
+  grayscale: jest.fn(() => sharp()),
+  normalise: jest.fn(() => sharp()),
+  normalize: jest.fn(() => sharp()),
+  negate: jest.fn(() => sharp()),
+  threshold: jest.fn(() => sharp()),
+  boolean: jest.fn(() => sharp()),
+  linear: jest.fn(() => sharp()),
+  modulate: jest.fn(() => sharp()),
+  tint: jest.fn(() => sharp()),
+  extract: jest.fn(() => sharp()),
+  trim: jest.fn(() => sharp()),
+  extend: jest.fn(() => sharp()),
+  embed: jest.fn(() => sharp()),
+  flatten: jest.fn(() => sharp()),
+  unflatten: jest.fn(() => sharp()),
+  median: jest.fn(() => sharp()),
+  convolve: jest.fn(() => sharp()),
+  composite: jest.fn(() => sharp()),
+  joinChannel: jest.fn(() => sharp()),
+  extractChannel: jest.fn(() => sharp()),
+  bandbool: jest.fn(() => sharp()),
+  removeAlpha: jest.fn(() => sharp()),
+  ensureAlpha: jest.fn(() => sharp()),
+  extractChannel: jest.fn(() => sharp()),
+  joinChannel: jest.fn(() => sharp()),
+  bandbool: jest.fn(() => sharp()),
+  removeAlpha: jest.fn(() => sharp()),
+  ensureAlpha: jest.fn(() => sharp()),
+}));
+
+export const format = {
+  jpeg: jest.fn(),
+  png: jest.fn(),
+  webp: jest.fn(),
+  avif: jest.fn(),
+  tiff: jest.fn(),
+  gif: jest.fn(),
+  svg: jest.fn(),
+  pdf: jest.fn(),
+  raw: jest.fn(),
+  magick: jest.fn(),
+  openslide: jest.fn(),
+  dz: jest.fn(),
+  v: jest.fn(),
+};
+
+export const kernel = {
+  nearest: 'nearest',
+  cubic: 'cubic',
+  lanczos2: 'lanczos2',
+  lanczos3: 'lanczos3',
+  mitchell: 'mitchell',
+};
+
+export const gravity = {
+  center: 'center',
+  north: 'north',
+  northeast: 'northeast',
+  east: 'east',
+  southeast: 'southeast',
+  south: 'south',
+  southwest: 'southwest',
+  west: 'west',
+  northwest: 'northwest',
+};
+
+export const strategy = {
+  entropy: 'entropy',
+  attention: 'attention',
+};
+
+export default sharp;

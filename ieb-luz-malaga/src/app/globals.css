@@ -1,0 +1,755 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Church Brand Colors - 2025 Modern Palette */
+  --church-primary: 220 70% 50%; /* Deep blue - main brand color for trust and balance */
+  --church-primary-light: 220 60% 60%; /* Lighter blue */
+  --church-accent: 45 85% 60%; /* Warm gold - accent color for CTAs only */
+  --church-accent-light: 45 90% 70%; /* Lighter warm gold */
+  --church-white: 0 0% 100%; /* Pure white for backgrounds */
+  --church-dark: 0 0% 18%; /* Modern graphite gray for text */
+  
+  /* Modern Sophisticated Colors */
+  --church-blue: 220 70% 50%; /* Deep blue for trust and balance */
+  --church-blue-light: 220 60% 60%; /* Lighter blue */
+  --church-gray: 0 0% 18%; /* Modern graphite gray */
+  --church-beige: 45 100% 96%; /* Warm beige for comfort */
+  --church-gradient-start: 220 70% 50%; /* Blue gradient start */
+  --church-gradient-end: 45 85% 60%; /* Gold gradient end */
+  
+  /* System Colors - 2025 Modern palette */
+  --background: var(--church-white); /* Clean white background */
+  --foreground: var(--church-gray); /* Modern graphite gray for text */
+  --card: var(--church-white);
+  --card-foreground: var(--church-gray);
+  --popover: var(--church-white);
+  --popover-foreground: var(--church-gray);
+  --primary: var(--church-accent); /* Gold for CTAs only */
+  --primary-foreground: var(--church-white);
+  --secondary: 220 20% 95%; /* Light blue-gray */
+  --secondary-foreground: var(--church-gray);
+  --muted: 220 20% 96%; /* Very light blue-gray for muted areas */
+  --muted-foreground: 0 0% 45%; /* Medium gray */
+  --accent: var(--church-primary); /* Deep blue for trust and balance */
+  --accent-foreground: var(--church-white);
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: var(--church-white);
+  --border: 220 15% 88%; /* Light blue-gray border */
+  --input: 220 15% 88%;
+  --ring: var(--church-accent); /* Gold for focus states */
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* 2025 Modern dark theme */
+  --background: var(--church-gray); /* Graphite gray background */
+  --foreground: var(--church-white);
+  --card: 220 15% 12%; /* Dark blue-gray for cards */
+  --card-foreground: var(--church-white);
+  --popover: 220 15% 12%;
+  --popover-foreground: var(--church-white);
+  --primary: var(--church-accent); /* Gold for CTAs */
+  --primary-foreground: var(--church-gray);
+  --secondary: 220 15% 18%; /* Dark blue-gray */
+  --secondary-foreground: var(--church-white);
+  --muted: 220 15% 15%; /* Very dark blue-gray */
+  --muted-foreground: 0 0% 65%; /* Light gray */
+  --accent: var(--church-blue-light); /* Lighter blue for dark theme */
+  --accent-foreground: var(--church-white);
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: var(--church-white);
+  --border: 220 15% 25%; /* Medium dark blue-gray */
+  --input: 220 15% 25%;
+  --ring: var(--church-accent);
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Micro-interactions and animations */
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-checkmark {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation utility classes */
+.animate-ripple {
+  animation: ripple 0.6s linear;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-checkmark {
+  animation: checkmark 0.6s ease-in-out;
+}
+
+.animate-draw-checkmark {
+  animation: draw-checkmark 0.6s ease-in-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.6s ease-out;
+}
+
+/* 2025 Enhanced Animations */
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+  }
+}
+
+.animate-scale-on-hover:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.animate-rotate-slow {
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Smooth transitions for interactive elements */
+.interactive {
+  transition: all 0.2s ease-in-out;
+}
+
+.interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus styles for accessibility - WCAG AA compliant */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  --tw-ring-color: #3b82f6; /* blue-500 */
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card-modern,
+  .card-elevated {
+    border: 2px solid hsl(var(--border));
+  }
+  
+  .btn-primary-modern,
+  .btn-secondary-modern {
+    border: 2px solid hsl(var(--border));
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-ripple,
+  .animate-shake,
+  .animate-checkmark,
+  .animate-draw-checkmark,
+  .animate-fade-in-up,
+  .animate-slide-in-right,
+  .animate-bounce-in,
+  .interactive:hover,
+  .btn-modern,
+  .card-modern,
+  .card-elevated {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip to content link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Modern gradient effects as recommended in technical report */
+.gradient-yellow-orange {
+  background: linear-gradient(135deg, hsl(var(--church-gradient-start)), hsl(var(--church-gradient-end)));
+}
+
+.gradient-blue-subtle {
+  background: linear-gradient(135deg, hsl(var(--church-blue-light)), hsl(var(--church-blue)));
+}
+
+.gradient-warm-neutral {
+  background: linear-gradient(135deg, hsl(var(--church-beige)), hsl(var(--church-white)));
+}
+
+/* 2025 Typography Improvements */
+.font-display {
+  font-family: var(--font-playfair), serif;
+}
+
+.font-body {
+  font-family: var(--font-inter), sans-serif;
+}
+
+.font-heading {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+/* Modern Text Gradients */
+.text-gradient-warm {
+  background: linear-gradient(135deg, hsl(var(--church-primary)), hsl(var(--church-accent)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-cool {
+  background: linear-gradient(135deg, hsl(var(--church-blue)), hsl(var(--church-blue-light)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Modern card shadows and depth */
+.card-modern {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-modern:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card-elevated {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-elevated:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Section separators with modern styling */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+}
+
+/* Modern button styles */
+.btn-modern {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+.btn-modern:hover,
+.btn-modern:focus {
+  transform: scale(1.05);
+}
+
+.btn-primary-modern {
+  background: linear-gradient(135deg, hsl(var(--church-gradient-start)), hsl(var(--church-gradient-end)));
+  color: hsl(var(--church-gray));
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary-modern:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary-modern {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.btn-secondary-modern:hover {
+  background-color: hsl(var(--accent) / 0.9);
+}
+
+/* Loading states */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* 2025 Modern Enhancements */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.glow-effect {
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--church-primary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--church-accent));
+}
+
+/* Enhanced Focus States */
+.focus-ring-modern:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+}
+
+/* Modern Button Hover Effects */
+.btn-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Text Selection Styling */
+::selection {
+  background: hsl(var(--church-accent));
+  color: hsl(var(--church-gray));
+}
+
+::-moz-selection {
+  background: hsl(var(--church-accent));
+  color: hsl(var(--church-gray));
+}
+
+/* 2025 Modern Enhancements */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.magnetic-hover:hover {
+  transform: translate3d(0, -8px, 0);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.dark .glass-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-glow {
+  box-shadow: 
+    0 0 5px hsl(var(--church-accent)),
+    0 0 10px hsl(var(--church-accent)),
+    0 0 15px hsl(var(--church-accent));
+}
+
+.hover-neon:hover {
+  box-shadow: 
+    0 0 10px hsl(var(--church-accent)),
+    0 0 20px hsl(var(--church-accent)),
+    0 0 30px hsl(var(--church-accent));
+  transition: box-shadow 0.3s ease;
+}
+
+/* Modern Scroll Snap */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.scroll-snap-center {
+  scroll-snap-align: center;
+}
+
+/* Improved Focus States for Accessibility */
+.focus-visible-modern:focus-visible {
+  outline: 2px solid hsl(var(--church-accent));
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Modern Gradient Text */
+.gradient-text-animated {
+  background: linear-gradient(
+    45deg,
+    hsl(var(--church-accent)),
+    hsl(var(--church-primary)),
+    hsl(var(--church-accent))
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Modern Button Hover Effects */
+.btn-modern-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-modern-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.btn-modern-hover:hover::before {
+  left: 100%;
+}
+
+/* Modern Card Hover Effects */
+.card-modern-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-modern-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.card-modern-hover:hover::before {
+  transform: translateX(100%);
+}
+
+/* Modern Typography */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Modern Spacing */
+.space-y-modern > * + * {
+  margin-top: clamp(1rem, 2vw, 2rem);
+}
+
+/* Modern Container */
+.container-modern {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+/* Modern Grid */
+.grid-modern {
+  display: grid;
+  gap: clamp(1rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Modern Flexbox */
+.flex-modern {
+  display: flex;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modern Responsive Typography */
+.text-responsive {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.heading-responsive {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* Modern Animation Utilities */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Modern Dark Mode Improvements */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-enhanced {
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    color: #e5e5e5;
+  }
+}
+
+/* Modern Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-friendly {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* Modern High Contrast Mode */
+@media (prefers-contrast: high) {
+  .high-contrast {
+    border: 2px solid currentColor;
+  }
+  
+  .high-contrast-text {
+    font-weight: bold;
+  }
+}
+
+/* Modern Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .respect-motion {
+    animation: none !important;
+    transition: none !important;
+  }
+}

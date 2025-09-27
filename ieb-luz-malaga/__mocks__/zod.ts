@@ -1,0 +1,141 @@
+// Mock para zod
+export const z = {
+  string: jest.fn(() => ({
+    min: jest.fn(() => ({})),
+    max: jest.fn(() => ({})),
+    email: jest.fn(() => ({})),
+    url: jest.fn(() => ({})),
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  number: jest.fn(() => ({
+    min: jest.fn(() => ({})),
+    max: jest.fn(() => ({})),
+    int: jest.fn(() => ({})),
+    positive: jest.fn(() => ({})),
+    negative: jest.fn(() => ({})),
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  boolean: jest.fn(() => ({
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  date: jest.fn(() => ({
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  array: jest.fn(() => ({
+    min: jest.fn(() => ({})),
+    max: jest.fn(() => ({})),
+    length: jest.fn(() => ({})),
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  object: jest.fn(() => ({
+    optional: jest.fn(() => ({})),
+    nullable: jest.fn(() => ({})),
+    default: jest.fn(() => ({})),
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+    shape: jest.fn(() => ({})),
+    partial: jest.fn(() => ({})),
+    pick: jest.fn(() => ({})),
+    omit: jest.fn(() => ({})),
+  })),
+  union: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  literal: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  enum: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  tuple: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  record: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  map: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  set: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  function: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  lazy: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  void: jest.fn(() => ({
+    parse: jest.fn(() => undefined),
+    safeParse: jest.fn(() => ({ success: true, data: undefined })),
+  })),
+  null: jest.fn(() => ({
+    parse: jest.fn(() => null),
+    safeParse: jest.fn(() => ({ success: true, data: null })),
+  })),
+  undefined: jest.fn(() => ({
+    parse: jest.fn(() => undefined),
+    safeParse: jest.fn(() => ({ success: true, data: undefined })),
+  })),
+  any: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  unknown: jest.fn(() => ({
+    parse: jest.fn((val) => val),
+    safeParse: jest.fn((val) => ({ success: true, data: val })),
+  })),
+  never: jest.fn(() => ({
+    parse: jest.fn(() => { throw new Error('Never type'); }),
+    safeParse: jest.fn(() => ({ success: false, error: new Error('Never type') })),
+  })),
+  ZodError: jest.fn(),
+  ZodIssueCode: {
+    invalid_type: 'invalid_type',
+    custom: 'custom',
+    invalid_union: 'invalid_union',
+    invalid_union_discriminator: 'invalid_union_discriminator',
+    invalid_enum_value: 'invalid_enum_value',
+    unrecognized_keys: 'unrecognized_keys',
+    invalid_arguments: 'invalid_arguments',
+    invalid_return_type: 'invalid_return_type',
+    invalid_date: 'invalid_date',
+    invalid_string: 'invalid_string',
+    too_small: 'too_small',
+    too_big: 'too_big',
+    invalid_intersection_types: 'invalid_intersection_types',
+    not_multiple_of: 'not_multiple_of',
+    not_finite: 'not_finite',
+  },
+};
+
+export default z;

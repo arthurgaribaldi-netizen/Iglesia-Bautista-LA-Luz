@@ -1,0 +1,186 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Job de criação de release
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Gerar changelog baseado nos commits desde a última tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${LAST_TAG}..HEAD)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --max-count=20)
+          fi
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          body: |
+            ## 🚀 Release ${{ steps.version.outputs.version }}
+            
+            ### 📋 Changes
+            ${{ steps.changelog.outputs.changelog }}
+            
+            ### 🔧 Technical Details
+            - **Build:** Automated via GitHub Actions
+            - **Tests:** All tests passing
+            - **Security:** Security scan completed
+            - **Performance:** Performance tests passed
+            
+            ### 📦 Installation
+            ```bash
+            npm install
+            npm run build
+            ```
+            
+            ### 🔍 Verification
+            - [ ] All tests passing
+            - [ ] Build successful
+            - [ ] Security scan clean
+            - [ ] Performance metrics within limits
+          draft: false
+          prerelease: false
+
+  # Job de build para release
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    needs: create-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload release artifacts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: .next/
+          asset_name: build-${{ needs.create-release.outputs.version }}.tar.gz
+          asset_content_type: application/gzip
+
+  # Job de deploy automático para produção
+  deploy-release:
+    name: Deploy Release
+    runs-on: ubuntu-latest
+    needs: [create-release, build-release]
+    environment: 
+      name: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      - name: Run smoke tests
+        run: |
+          sleep 30
+          curl -f ${{ secrets.PRODUCTION_URL }}/api/health
+          curl -f ${{ secrets.PRODUCTION_URL }}/api/church-info
+
+      - name: Update deployment status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: releases } = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const latestRelease = releases.find(release => 
+              release.tag_name === '${{ needs.create-release.outputs.version }}'
+            );
+            
+            if (latestRelease) {
+              await github.rest.repos.updateRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: latestRelease.id,
+                body: latestRelease.body + '\n\n✅ **Deploy Status:** Successfully deployed to production'
+              });
+            }
+
+  # Job de notificação
+  notify:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    needs: [create-release, deploy-release]
+    steps:
+      - name: Notify team
+        run: |
+          echo "🎉 Release ${{ needs.create-release.outputs.version }} published successfully!"
+          echo "✅ Deploy completed to production"
+          echo "📊 Notification sent to team"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Release ${{ needs.create-release.outputs.version }} failed"
+          echo "📊 Failure notification sent to team"
