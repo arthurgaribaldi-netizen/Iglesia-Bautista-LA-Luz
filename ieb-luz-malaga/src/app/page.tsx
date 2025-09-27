@@ -64,8 +64,9 @@ export default function Home() {
             </p>
             
             <p className="text-lg text-gray-500 dark:text-gray-400 mb-16 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400">
-              Una comunidad de fe donde puedes crecer espiritualmente, 
-              conectar con otros creyentes y descubrir el amor de Dios.
+              Una comunidad de fe en Málaga donde puedes crecer espiritualmente, 
+              conectar con otros creyentes y descubrir el amor de Dios. 
+              Te esperamos cada domingo para adorar juntos.
             </p>
             
             {/* Single Primary CTA - SSR Compatible */}
@@ -155,7 +156,7 @@ export default function Home() {
                 <div className="flex items-center justify-between p-6 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl border border-blue-200 dark:border-blue-700 hover:scale-102 transition-transform duration-200">
                   <div className="flex items-center gap-4">
                     <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span className="font-semibold text-gray-900 dark:text-white">Escola Bíblica</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">Escuela Bíblica Dominical</span>
                   </div>
                   <span className="text-lg font-bold text-blue-600 dark:text-blue-400">11:00</span>
                 </div>
@@ -163,9 +164,17 @@ export default function Home() {
                 <div className="flex items-center justify-between p-6 bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20 rounded-2xl border border-amber-200 dark:border-amber-700 hover:scale-102 transition-transform duration-200">
                   <div className="flex items-center gap-4">
                     <div className="w-3 h-3 bg-amber-500 rounded-full animate-pulse"></div>
-                    <span className="font-semibold text-gray-900 dark:text-white">Culto de Adoração</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">Culto de Adoración</span>
                   </div>
                   <span className="text-lg font-bold text-amber-600 dark:text-amber-400">18:00</span>
+                </div>
+                
+                <div className="flex items-center justify-between p-6 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl border border-green-200 dark:border-green-700 hover:scale-102 transition-transform duration-200">
+                  <div className="flex items-center gap-4">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="font-semibold text-gray-900 dark:text-white">Estudio Bíblico (Miércoles)</span>
+                  </div>
+                  <span className="text-lg font-bold text-green-600 dark:text-green-400">19:30</span>
                 </div>
               </div>
             </SSRModernCard>
@@ -255,9 +264,9 @@ export default function Home() {
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8 hover:scale-110 hover:rotate-3 transition-transform duration-300">
                   <BookOpen className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-display">Estudio Bíblico</h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-display">Escuela Bíblica</h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                  Profundiza tu conocimiento de las Escrituras a través de estudios semanales que transforman vidas
+                  Profundiza tu conocimiento de las Escrituras a través de estudios bíblicos que transforman vidas y edifican la fe
                 </p>
                 <div className="inline-flex items-center px-6 py-3 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium hover:scale-105 transition-transform duration-200">
                   📖 Domingos 11:00
@@ -271,12 +280,12 @@ export default function Home() {
                 <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-8 hover:scale-110 hover:rotate-3 transition-transform duration-300">
                   <Users className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-display">Comunidad</h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-display">Ministerios</h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                  Conéctate con otros creyentes y forma parte de nuestra familia espiritual en Cristo
+                  Conéctate con otros creyentes y participa en nuestros ministerios: jóvenes, niños, mujeres y familias
                 </p>
                 <div className="inline-flex items-center px-6 py-3 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium hover:scale-105 transition-transform duration-200">
-                  👥 Crecimiento Juntos
+                  👥 Ministerios Activos
                 </div>
               </div>
             </SSRModernCard>
@@ -314,10 +323,11 @@ export default function Home() {
         <div className="relative container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white font-display animate-fade-in-up">
-              Ven a Visitanos
+              Ven a Visitarnos
             </h2>
             <p className="text-xl md:text-2xl mb-12 text-blue-100 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200">
-              Estamos ansiosos por conocerte y darte la bienvenida a nuestra comunidad de fe.
+              Estamos ansiosos por conocerte y darte la bienvenida a nuestra comunidad de fe en Málaga. 
+              Te esperamos cada domingo para adorar juntos.
             </p>
             <div className="animate-fade-in-up animation-delay-400 hover:scale-105 active:scale-95 transition-transform duration-300">
               <Button 
