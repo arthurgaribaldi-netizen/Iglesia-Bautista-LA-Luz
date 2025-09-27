@@ -182,6 +182,18 @@ const nextConfig = {
 
   // SSR-optimized webpack config
   webpack: (config, { dev, isServer }) => {
+    // Exclude test files from build
+    config.module.rules.push({
+      test: /\.(test|spec)\.(js|jsx|ts|tsx)$/,
+      use: 'ignore-loader',
+    });
+
+    // Exclude test directories
+    config.module.rules.push({
+      test: /__tests__/,
+      use: 'ignore-loader',
+    });
+
     // SSR optimizations
     if (!dev && !isServer) {
       // Keep basic optimizations for SSR
