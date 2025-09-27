@@ -1,9 +1,9 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": ".next",
+  "buildCommand": "cd ieb-luz-malaga && npm install && npm run build",
+  "outputDirectory": "ieb-luz-malaga/.next",
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "devCommand": "npm run dev",
+  "installCommand": "cd ieb-luz-malaga && npm install",
+  "devCommand": "cd ieb-luz-malaga && npm run dev",
   "rewrites": [
     {
       "source": "/(.*)",
