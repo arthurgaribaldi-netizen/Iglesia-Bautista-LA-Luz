@@ -3,66 +3,58 @@
 @tailwind utilities;
 
 :root {
-  /* Church Brand Colors - 2025 Modern Palette */
-  --church-primary: 220 70% 50%; /* Deep blue - main brand color for trust and balance */
+  /* Church Brand Colors - 2025 Clean & Simple */
+  --church-primary: 220 70% 50%; /* Deep blue - main brand color */
   --church-primary-light: 220 60% 60%; /* Lighter blue */
-  --church-accent: 45 85% 60%; /* Warm gold - accent color for CTAs only */
+  --church-accent: 45 85% 60%; /* Warm gold - accent color */
   --church-accent-light: 45 90% 70%; /* Lighter warm gold */
   --church-white: 0 0% 100%; /* Pure white for backgrounds */
   --church-dark: 0 0% 18%; /* Modern graphite gray for text */
   
-  /* Modern Sophisticated Colors */
-  --church-blue: 220 70% 50%; /* Deep blue for trust and balance */
-  --church-blue-light: 220 60% 60%; /* Lighter blue */
-  --church-gray: 0 0% 18%; /* Modern graphite gray */
-  --church-beige: 45 100% 96%; /* Warm beige for comfort */
-  --church-gradient-start: 220 70% 50%; /* Blue gradient start */
-  --church-gradient-end: 45 85% 60%; /* Gold gradient end */
-  
-  /* System Colors - 2025 Modern palette */
+  /* System Colors - 2025 Clean palette */
   --background: var(--church-white); /* Clean white background */
-  --foreground: var(--church-gray); /* Modern graphite gray for text */
+  --foreground: var(--church-dark); /* Modern graphite gray for text */
   --card: var(--church-white);
-  --card-foreground: var(--church-gray);
+  --card-foreground: var(--church-dark);
   --popover: var(--church-white);
-  --popover-foreground: var(--church-gray);
-  --primary: var(--church-accent); /* Gold for CTAs only */
+  --popover-foreground: var(--church-dark);
+  --primary: var(--church-primary); /* Blue for CTAs */
   --primary-foreground: var(--church-white);
   --secondary: 220 20% 95%; /* Light blue-gray */
-  --secondary-foreground: var(--church-gray);
+  --secondary-foreground: var(--church-dark);
   --muted: 220 20% 96%; /* Very light blue-gray for muted areas */
   --muted-foreground: 0 0% 45%; /* Medium gray */
-  --accent: var(--church-primary); /* Deep blue for trust and balance */
+  --accent: var(--church-accent); /* Gold for accents */
   --accent-foreground: var(--church-white);
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: var(--church-white);
   --border: 220 15% 88%; /* Light blue-gray border */
   --input: 220 15% 88%;
-  --ring: var(--church-accent); /* Gold for focus states */
+  --ring: var(--church-primary); /* Blue for focus states */
   --radius: 0.5rem;
 }
 
 .dark {
-  /* 2025 Modern dark theme */
-  --background: var(--church-gray); /* Graphite gray background */
+  /* 2025 Clean dark theme */
+  --background: 220 15% 8%; /* Dark blue-gray background */
   --foreground: var(--church-white);
   --card: 220 15% 12%; /* Dark blue-gray for cards */
   --card-foreground: var(--church-white);
   --popover: 220 15% 12%;
   --popover-foreground: var(--church-white);
-  --primary: var(--church-accent); /* Gold for CTAs */
-  --primary-foreground: var(--church-gray);
+  --primary: var(--church-primary); /* Blue for CTAs */
+  --primary-foreground: var(--church-white);
   --secondary: 220 15% 18%; /* Dark blue-gray */
   --secondary-foreground: var(--church-white);
   --muted: 220 15% 15%; /* Very dark blue-gray */
   --muted-foreground: 0 0% 65%; /* Light gray */
-  --accent: var(--church-blue-light); /* Lighter blue for dark theme */
+  --accent: var(--church-accent); /* Gold for accents */
   --accent-foreground: var(--church-white);
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: var(--church-white);
   --border: 220 15% 25%; /* Medium dark blue-gray */
   --input: 220 15% 25%;
-  --ring: var(--church-accent);
+  --ring: var(--church-primary);
 }
 
 * {
