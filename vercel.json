@@ -1,10 +1,9 @@
 {
-  "buildCommand": "cd ieb-luz-malaga && npm install && npm run build",
-  "outputDirectory": "ieb-luz-malaga/.next",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "cd ieb-luz-malaga && npm install",
-  "devCommand": "cd ieb-luz-malaga && npm run dev",
-  "rootDirectory": "ieb-luz-malaga",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -31,7 +30,7 @@
     }
   ],
   "functions": {
-    "ieb-luz-malaga/src/app/api/**/*.ts": {
+    "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
   }
